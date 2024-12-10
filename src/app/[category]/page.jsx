@@ -6,12 +6,9 @@ import Image from 'next/image'; // Import Image from Next.js for optimized image
 export async function generateMetadata({ params }) {
   const { category } = params;
 
-  // Check if running on the server
-  const isServerSide = typeof window === 'undefined'; 
-  const apiUrl = isServerSide ? `http://localhost:3000/api/categories/${category}/products` : `/api/categories/${category}/products`; // Use full URL in SSR
-
+  const apiUrl =  process.env.NEXT_PUBLIC_API_URL;
   try {
-    const response = await fetch(apiUrl);
+    const response = await fetch(`${apiUrl}/api/categories/${category}/products`);
 
     if (!response.ok) {
       return { title: 'Category Not Found', description: 'The requested category does not exist.' };
@@ -35,12 +32,9 @@ export async function generateMetadata({ params }) {
 export default async function CategoryPage({ params }) {
   const { category } = params; // Access category parameter
 
-  // Check if running on the server
-  const isServerSide = typeof window === 'undefined'; 
-  const apiUrl = isServerSide ? `http://localhost:3000/api/categories/${category}/products` : `/api/categories/${category}/products`; // Use full URL in SSR
-
+  const apiUrl =  process.env.NEXT_PUBLIC_API_URL;
   try {
-    const response = await fetch(apiUrl);
+    const response = await fetch(`${apiUrl}/api/categories/${category}/products`);
 
     if (!response.ok) {
       notFound(); // Redirect to 404 page if category not found

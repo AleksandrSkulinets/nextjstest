@@ -5,14 +5,12 @@ export async function generateMetadata({ params }) {
   // Await params before destructuring
   const { category, product } = await params;
 
-  // Check if running on the server
-  const isServerSide = typeof window === 'undefined';
-  const apiUrl = isServerSide 
-    ? `http://localhost:3000/api/categories/${category}/products/${product}` // Full URL for SSR
-    : `/api/categories/${category}/products/${product}`; // Relative URL for client-side
+  
+  
+  const apiUrl =  process.env.NEXT_PUBLIC_API_URL;
 
   try {
-    const response = await fetch(apiUrl);
+    const response = await fetch(`${apiUrl}/api/categories/${category}/products/${product}`);
 
     if (!response.ok) {
       return { 
@@ -50,15 +48,11 @@ export default async function ProductPage({ params }) {
   // Await params before destructuring
   const { category, product } = await params;
 
-  // Check if running on the server
-  const isServerSide = typeof window === 'undefined';
-  const apiUrl = isServerSide 
-    ? `http://localhost:3000/api/categories/${category}/products/${product}` // Full URL for SSR
-    : `/api/categories/${category}/products/${product}`; // Relative URL for client-side
+  const apiUrl =  process.env.NEXT_PUBLIC_API_URL;
 
   // Fetch product details
   const fetchProduct = async () => {
-    const response = await fetch(apiUrl);
+    const response = await fetch(`${apiUrl}/api/categories/${category}/products/${product}`);
 
     if (!response.ok) {
       if (response.status === 404) {
