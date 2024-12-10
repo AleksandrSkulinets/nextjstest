@@ -20,7 +20,7 @@ export async function GET(req) {
   } catch (err) {
     console.error('Error fetching products:', err.message);
 
-    // Return error response if something goes wrong
+    // Return error response if somethaing goes wrong
     return new Response(
       JSON.stringify({ error: 'Failed to fetch products', details: err.message }),
       { status: 500 }

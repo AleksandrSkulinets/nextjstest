@@ -2,7 +2,8 @@ import { notFound } from 'next/navigation'; // Import notFound for 404 handling
 
 // Export metadata for this page
 export async function generateMetadata({ params }) {
-  const { category, product } = params;
+  // Await params before destructuring
+  const { category, product } = await params;
 
   // Check if running on the server
   const isServerSide = typeof window === 'undefined';
@@ -46,7 +47,8 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function ProductPage({ params }) {
-  const { category, product } = params;
+  // Await params before destructuring
+  const { category, product } = await params;
 
   // Check if running on the server
   const isServerSide = typeof window === 'undefined';

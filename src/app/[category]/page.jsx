@@ -1,6 +1,6 @@
 import { notFound } from 'next/navigation'; // Import notFound for 404 handling
 import Image from 'next/image'; // Import Image from Next.js for optimized image handling
-import Head from 'next/head';
+
 
 // Fetch and dynamically generate metadata for the page
 export async function generateMetadata({ params }) {

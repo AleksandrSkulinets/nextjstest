@@ -1,13 +1,12 @@
-// /pages/index.js
 import Link from 'next/link';
 import Image from 'next/image';
 
 export default async function HomePage() {
-  // Check if running on the server or client
-  const isServerSide = typeof window === 'undefined'; 
+  // Fetch categories based on whether it's client or server side
 
-  // Use full URL during SSR (if server-side), relative URL for CSR (client-side)
-  const apiUrl = isServerSide ? `http://localhost:3000/api/categories` : `/api/categories`;
+  // Use full URL for server-side rendering (SSR)
+  const isServerSide = typeof window === 'undefined'; // Check if running on the server
+  const apiUrl = isServerSide ? `http://localhost:3000/api/categories` : `/api/categories`; // Use full URL in SSR
 
   try {
     const response = await fetch(apiUrl);

@@ -1,7 +1,8 @@
 import supabase from "../../../../db"; // Import the Supabase client
 
 export async function GET(req, { params }) {
-  const { category, product } = params; // Extract 'category' (catid) and 'product' (prodid) from the URL params
+  // Wait for the params to be resolved
+  const { category, product } = await params;  // Make sure params is awaited
 
   try {
     // Query to fetch the specific product in the given category using Supabase
