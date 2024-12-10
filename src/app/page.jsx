@@ -2,14 +2,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 export default async function HomePage() {
-  // Fetch categories based on whether it's client or server side
-
-  // Use full URL for server-side rendering (SSR)
-
-  const apiUrl = process.env.NEXT_PUBLIC_API_URL || '/api/categories';
+  
+  const apiUrl =  process.env.NEXT_PUBLIC_API_URL; // Use full URL in SSR
 
   try {
-    const response = await fetch(apiUrl);
+    const response = await fetch(`${apiUrl}/api/categories`);
     const categories = await response.json();
 
     if (!response.ok || categories.length === 0) {
