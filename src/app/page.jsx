@@ -5,8 +5,8 @@ export default async function HomePage() {
   // Fetch categories based on whether it's client or server side
 
   // Use full URL for server-side rendering (SSR)
-  const isServerSide = typeof window === 'undefined'; // Check if running on the server
-  const apiUrl = isServerSide ? `http://localhost:3000/api/categories` : `/api/categories`; // Use full URL in SSR
+
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL || '/api/categories';
 
   try {
     const response = await fetch(apiUrl);
