@@ -83,6 +83,7 @@ export default async function ProductPage({ params }) {
           height={500} 
         />
         <p>{productData.proddescr}</p>
+        <p>Manufacturer: {productData.manufacturer}</p>
         <p>Price: ${productData.price}</p>
       </div>
     );
