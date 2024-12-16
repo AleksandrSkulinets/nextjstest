@@ -1,34 +1,46 @@
 "use client"; // Ensure this is a client-side component
 
-import { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation"; // For navigation after checkout
 import Head from "next/head";
 
 const CartPage = () => {
-  // Load cart from localStorage
-  const [cart, setCart] = useState(() => JSON.parse(localStorage.getItem("cart")) || []);
-  
-  // Calculate total price
-  const totalPrice = cart.reduce((total, item) => total + item.price, 0);
-
+  const [cart, setCart] = useState([]);
+  const [isClient, setIsClient] = useState(false); // State to track if we are on the client-side
   const router = useRouter();
 
-  // Handle checkout (for now, just log and redirect)
+  useEffect(() => {
+    // Check if window is available (this ensures client-side execution)
+    setIsClient(true);
+
+    // Fetch the cart from localStorage only on the client side
+    const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+    setCart(storedCart);
+  }, []); // Empty dependency array means this runs only once after the first render
+
+  // Calculate the total price
+  const totalPrice = cart.reduce((total, item) => total + item.price, 0);
+
+  // Handle checkout (for now, just log and redirect to a success page)
   const handleCheckout = () => {
     if (cart.length === 0) {
       alert("Your cart is empty!");
       return;
     }
     console.log("Proceeding to checkout with items:", cart);
-    router.push("/checkout"); // Redirect to checkout page (or success page)
+    router.push("/checkout"); // Redirect to a checkout page (or a success page)
   };
 
-  // Handle item removal from cart
+  // Handle remove item from cart
   const removeFromCart = (productId) => {
     const updatedCart = cart.filter((item) => item.prodname !== productId);
     setCart(updatedCart);
     localStorage.setItem("cart", JSON.stringify(updatedCart)); // Update localStorage
   };
+
+  if (!isClient) {
+    return null; // Ensure the page does not render until it's safe to use localStorage
+  }
 
   return (
     <>
@@ -40,7 +52,7 @@ const CartPage = () => {
       <div className="mt-6 px-4">
         <h1 className="font-bold text-2xl my-4">Shopping Cart</h1>
 
-        {/* Display cart items */}
+        {/* Cart Items */}
         {cart.length === 0 ? (
           <p>Your cart is empty.</p>
         ) : (

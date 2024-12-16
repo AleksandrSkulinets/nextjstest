@@ -1,45 +1,56 @@
 "use client"; // Ensure this is a client-side component
 
-import { useState, useEffect } from "react";
-import { use } from "react"; // For the use() hook to unwrap params
-import { notFound } from 'next/navigation';
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation"; // For navigation after checkout
 import Head from "next/head";
-import { useRouter } from 'next/navigation'; // For navigation
+import { notFound } from 'next/navigation';
 
 const ProductPage = ({ params }) => {
-  const { category, product } = use(params); // Unwrap params
+  const { category, product } = params;
+
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-  
   const [productData, setProductData] = useState(null);
-  const [cart, setCart] = useState(() => JSON.parse(localStorage.getItem("cart")) || []); // Load cart from localStorage
+  const [cart, setCart] = useState([]); // State to hold cart items
+  const [isClient, setIsClient] = useState(false); // Track client-side rendering
 
   useEffect(() => {
+    // Set client-side flag to true when the component mounts
+    setIsClient(true);
+
+    // Fetch product data
     const fetchProduct = async () => {
       const response = await fetch(`${apiUrl}/api/categories/${category}/products/${product}`);
       if (!response.ok) {
         if (response.status === 404) {
-          notFound(); // Redirect to 404 page if the product is not found
+          notFound();
           return;
         }
-        throw new Error("Failed to fetch product");
+        throw new Error('Failed to fetch product');
       }
 
       const data = await response.json();
-      setProductData(data); // Set product data when fetched successfully
+      setProductData(data);
     };
 
     fetchProduct();
   }, [category, product]);
 
-  // Add to cart handler
+  useEffect(() => {
+    // Only access localStorage on the client side
+    if (isClient) {
+      const storedCart = JSON.parse(localStorage.getItem("cart")) || [];
+      setCart(storedCart);
+    }
+  }, [isClient]);
+
   const addToCart = (product) => {
-    const updatedCart = [...cart, product]; // Add new product to cart
+    const updatedCart = [...cart, product];
     setCart(updatedCart);
-    localStorage.setItem("cart", JSON.stringify(updatedCart)); // Save to localStorage
-    alert(`${product.prodname} has been added to your cart!`);
+    localStorage.setItem("cart", JSON.stringify(updatedCart)); // Update localStorage
+    alert(`Added ${product.prodname} to the cart`);
   };
 
-  if (!productData) return null; // Return null if no product data yet
+  if (!productData) return null;
 
   return (
     <>
@@ -66,6 +77,18 @@ const ProductPage = ({ params }) => {
         >
           Add to Cart
         </button>
+
+        {/* Optional: Display items in the cart */}
+        <div className="mt-6">
+          <h2 className="font-bold text-xl">Cart ({cart.length} items)</h2>
+          <ul>
+            {cart.map((item, index) => (
+              <li key={index} className="my-2">
+                {item.prodname} - ${item.price}
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </>
   );
