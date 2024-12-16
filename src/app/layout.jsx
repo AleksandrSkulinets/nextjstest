@@ -1,5 +1,5 @@
 import './globals.css'; // Import global CSS
-
+import Navbar from './components/Navbar';
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
@@ -9,7 +9,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className="w-full h-screen">
         <header className="bg-gray-800 text-white py-4 fixed top-0 w-full mt-8">
-          {/* Add your header content here */}
+          <Navbar />
         </header>
 
         <main className="container mx-auto px-4 py-8 mt-6">
