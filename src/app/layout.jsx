@@ -8,7 +8,7 @@ export default function RootLayout({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </head>
       <body className="w-full h-screen">
-        <header className="bg-gray-800 text-white py-4 fixed top-0 w-full mt-8">
+        <header className="bg-gray-800 text-white py-4 fixed top-0 w-full">
           <Navbar />
         </header>
 
