@@ -46,8 +46,6 @@ const Navbar = () => {
           {/* Show loading state */}
           {loading && <li>Loading categories...</li>}
 
-          {/* Show error message if there is an error */}
-          {error && <li className="text-red-500">Error: {error}</li>}
 
           {/* Show message if no categories are available */}
           {categories?.length === 0 ? (
