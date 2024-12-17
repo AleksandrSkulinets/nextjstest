@@ -63,7 +63,7 @@ export async function POST(req) {
 
     // Email options for user
     const userMailOptions = {
-      from: "noreply@example.com", // Replace with your domain email
+      from: "noreply@shopexample.com", // Replace with your domain email
       to: email,
       subject: "Order Confirmation",
       html: emailHTML, // Use HTML template
@@ -71,7 +71,7 @@ export async function POST(req) {
 
     // Email options for admin
     const adminMailOptions = {
-      from: "noreply@example.com",
+      from: "noreply@shopexample.com",
       to: process.env.ADMIN_EMAIL,
       subject: "New Order Received",
       html: `
