@@ -25,7 +25,7 @@ const CheckoutPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-
+  
     try {
       const response = await fetch("/api/sendOrderEmail", {
         method: "POST",
@@ -34,13 +34,17 @@ const CheckoutPage = () => {
         },
         body: JSON.stringify({
           ...formData,
-          cart: JSON.parse(localStorage.getItem("cart")), // Getting cart data from localStorage
+          cart: JSON.parse(localStorage.getItem("cart")), // Sending cart data
         }),
       });
-
+  
       if (response.ok) {
         alert("Order placed successfully!");
-        router.push("/thank-you"); // Redirect to a thank-you page or order summary
+  
+        // Clear cart from localStorage and redirect
+        localStorage.removeItem("cart");
+        setIsSubmitting(false); // Reset submit state if needed
+        router.push("/thank-you"); // Redirect to a thank-you page
       } else {
         alert("There was an error placing your order.");
       }
@@ -51,6 +55,7 @@ const CheckoutPage = () => {
       setIsSubmitting(false);
     }
   };
+  
 
   return (
     <div className="p-6 max-w-lg mx-auto">
